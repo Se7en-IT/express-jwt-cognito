@@ -1,0 +1,12 @@
+require('dotenv').config()
+const express = require('express')
+const morgan = require('morgan')
+const publicRoutes = require('./routes/public.js')
+const protectRoutes = require('./routes/protect.js')
+
+const app = express()
+app.use(morgan('combined'))
+app.use(express.json())
+app.use('/public', publicRoutes)
+app.use('/protect', protectRoutes)
+app.listen(process.env.PORT || 3000)
