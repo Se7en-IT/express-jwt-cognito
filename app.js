@@ -1,4 +1,5 @@
 require('dotenv').config()
+global.fetch = require('node-fetch')
 const express = require('express')
 const morgan = require('morgan')
 const publicRoutes = require('./routes/public.js')

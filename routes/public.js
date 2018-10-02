@@ -1,13 +1,22 @@
 const router = require('express').Router()
-const passport = require('passport')
 const jwt = require('jsonwebtoken')
+const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
+const CognitoService = require('../services/cognito.js')
 
 passport.use(new LocalStrategy(
-  function (username, password, done) {
-    done(null, username === 'admin' ? {
-      'id': 7
-    } : false)
+  async function (username, password, done) {
+    try {
+      let result = await CognitoService.login(username, password)
+      done(null, {
+        'username': username,
+        'idToken': result.idToken,
+        'accessToken': result.accessToken,
+        'refreshToken': result.refreshToken
+      })
+    } catch (ex) {
+      done(ex)
+    }
   }
 ))
 

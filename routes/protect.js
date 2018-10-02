@@ -3,13 +3,18 @@ const passport = require('passport')
 const passportJWT = require('passport-jwt')
 const JWTStrategy = passportJWT.Strategy
 const ExtractJWT = passportJWT.ExtractJwt
+const CognitoService = require('../services/cognito.js')
 
 /* middleware */
 passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.JWT_SECRET
-}, function (jwtPayload, done) {
-  done(null, jwtPayload)
+}, async function (jwtPayload, done) {
+  try {
+    done(null, await CognitoService.getSession(jwtPayload))
+  } catch (err) {
+    done(err)
+  }
 }))
 
 router.use(passport.authenticate('jwt', { session: false }))
