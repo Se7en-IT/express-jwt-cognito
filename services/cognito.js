@@ -2,8 +2,8 @@ const { promisify } = require('util')
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js')
 global.fetch = require('node-fetch')
 const poolData = {
-  UserPoolId: 'eu-west-1_s1UduP7tO',
-  ClientId: '25h7nsp292tmo8urd25ig6efij'
+  UserPoolId: process.env.USER_POOL_ID,
+  ClientId: process.env.CLIENT_ID
 }
 const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData)
 
